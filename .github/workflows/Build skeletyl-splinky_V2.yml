@@ -1,0 +1,10 @@
+# Copyright 2021 Manna Harbour
+# https://github.com/manna-harbour/miryoku
+
+name: 'Build skeletyl-splinky_V2'
+on: push
+jobs:
+  build:
+    uses: ./.github/workflows/main.yml
+    with:
+      keyboard: '["bastardkb/skeletyl/v2/splinky/v2"]'
