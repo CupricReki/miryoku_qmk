@@ -1,7 +1,7 @@
 # Copyright 2021 Manna Harbour
 # https://github.com/manna-harbour/miryoku
 
-name: 'Build Example skeletyl'
+name: 'Build skeletyl'
 on:
   - workflow_dispatch
 jobs:
