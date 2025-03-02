@@ -7,4 +7,4 @@ jobs:
   build:
     uses: ./.github/workflows/main.yml
     with:
-      keyboard: '["bastardkb/skeletyl/v2/splinky/v2"]'
+      keyboard: '["bastardkb/skeletyl/v2/splinky_2"]'
