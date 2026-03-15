@@ -17,6 +17,7 @@ ifneq ($(CONVERT_TO),)
         $(call CATASTROPHIC_ERROR,Converting from '$(PIN_COMPATIBLE)' to '$(CONVERT_TO)' not possible!)
     endif
 
+    CONVERTER := $(patsubst %/,%,$(CONVERTER))
     -include $(CONVERTER)/pre_converter.mk
 
     PLATFORM_KEY = $(shell echo $(CONVERTER) | cut -d "/" -f2)
