@@ -1,0 +1,83 @@
+# Copyright 2021 Manna Harbour
+# https://github.com/manna-harbour/miryoku
+
+stages:
+  - build
+
+.build_template: &build_template
+  stage: build
+  image: qmkfm/qmk_cli
+  variables:
+    ALPHAS: "default"
+    NAV: "default"
+    CLIPBOARD: "default"
+    LAYERS: "default"
+    MAPPING: "default"
+    RULES: "default"
+    CUSTOM_CONFIG: "default"
+  before_script:
+    - git config --global --add safe.directory '*'
+    - python3 -m pip install --upgrade pip
+    - python3 -m pip install -r requirements.txt
+    - make git-submodule
+  script:
+    - |
+      artifact_dir="artifacts"
+      mkdir "$artifact_dir"
+      user_dir="users/manna-harbour_miryoku"
+      rules_file="$user_dir/custom_rules.mk"
+      config_file="$user_dir/custom_config.h"
+
+      artifact_build_name=$(echo "miryoku_qmk $KEYBOARD" | tr '/' '_')
+
+      for option in "alphas=$ALPHAS" "nav=$NAV" "clipboard=$CLIPBOARD" "layers=$LAYERS" "mapping=$MAPPING"
+      do
+        if ! expr "$option" : '.*=default$' > /dev/null
+        then
+          artifact_build_name="$artifact_build_name "$(echo "$option" | tr '=' '_')
+          option=$(echo "MIRYOKU_$option" | tr 'a-z' 'A-Z')
+          echo "$option" >> "$rules_file"
+        fi
+      done
+
+      if [ -n "$RULES" ] && [ "$RULES" != "default" ]
+      then
+        artifact_build_name="$artifact_build_name rules_"$(echo "$RULES" | md5sum | cut -d ' ' -f 1)
+        echo "$RULES" >> "$rules_file"
+      fi
+
+      if [ -n "$CUSTOM_CONFIG" ] && [ "$CUSTOM_CONFIG" != "default" ]
+      then
+        artifact_build_name="$artifact_build_name config_"$(echo "$CUSTOM_CONFIG" | md5sum | cut -d ' ' -f 1)
+        echo "$CUSTOM_CONFIG" >> "$config_file"
+      fi
+
+      cp "$rules_file" "$config_file" "$artifact_dir" 2>/dev/null || true
+      artifact_build_name=$(echo "$artifact_build_name" | tr ' ' '-')
+
+      qmk compile -kb "$KEYBOARD" -km manna-harbour_miryoku
+      cp *manna-harbour_miryoku* "$artifact_dir/"
+
+      echo "Built artifact: $artifact_build_name"
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - artifacts/
+    when: always
+    expire_in: 1 week
+
+build-skeletyl-splinky_v2:
+  <<: *build_template
+  variables:
+    KEYBOARD: "bastardkb/skeletyl/v2/splinky_2"
+
+build-skeletyl-elitec:
+  <<: *build_template
+  variables:
+    KEYBOARD: "bastardkb/skeletyl/v2/elitec"
+
+build-crkbd-splinky_v3:
+  <<: *build_template
+  variables:
+    KEYBOARD: "crkbd/rev1"
+    RULES: "CONVERT_TO = splinky_3"
