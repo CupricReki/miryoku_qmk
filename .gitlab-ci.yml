@@ -70,8 +70,13 @@ stages:
       done
 
       if [ -n "${SPLIT_EE_HANDS:-}" ]; then
+        # CONVERT_TO must be passed to make explicitly: converters.mk is included before
+        # user custom_rules.mk, so the RULES variable (written to custom_rules.mk) does not
+        # affect the split make invocations.
+        make_convert_to=""
+        [ -n "${SPLIT_CONVERT_TO:-}" ] && make_convert_to="CONVERT_TO=${SPLIT_CONVERT_TO}"
         for hand in left right; do
-          make "$KEYBOARD:manna-harbour_miryoku:uf2-split-$hand"
+          make $make_convert_to "$KEYBOARD:manna-harbour_miryoku:uf2-split-$hand"
           for u in .build/*manna-harbour_miryoku*.uf2; do
             [ -f "$u" ] && cp "$u" "$artifact_dir/$(basename "$u" .uf2)_${hand}.uf2" && break
           done
@@ -103,3 +108,4 @@ build-crkbd-splinky_v3:
     KEYBOARD: "crkbd/rev1"
     RULES: "CONVERT_TO = splinky_3"
     SPLIT_EE_HANDS: "true"
+    SPLIT_CONVERT_TO: "splinky_3"
