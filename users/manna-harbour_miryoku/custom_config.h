@@ -5,3 +5,8 @@
 
 #pragma once
 
+#define TAPPING_TERM 140
+#define EE_HANDS
+
+#define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_LED_STATE_ENABLE

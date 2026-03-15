@@ -1,0 +1,11 @@
+# Copyright 2021 Manna Harbour
+# https://github.com/manna-harbour/miryoku
+
+name: 'Build crkbd-splinky_V3'
+on: push
+jobs:
+  build:
+    uses: ./.github/workflows/main.yml
+    with:
+      keyboard: '["crkbd/rev1"]'
+      rules: '["CONVERT_TO = splinky_3"]'

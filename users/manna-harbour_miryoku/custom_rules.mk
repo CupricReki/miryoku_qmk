@@ -1,4 +1,5 @@
 # Copyright 2019 Manna Harbour
 # https://github.com/manna-harbour/miryoku
 
-CONSOLE_ENABLE = yes
+# CONSOLE_ENABLE = yes
+RGB_MATRIX_ENABLE = yes
