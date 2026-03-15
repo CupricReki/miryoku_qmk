@@ -59,6 +59,11 @@ stages:
       cp *manna-harbour_miryoku* "$artifact_dir/"
       [ -f .build/*manna-harbour_miryoku*.uf2 ] && cp .build/*manna-harbour_miryoku*.uf2 "$artifact_dir/"
       [ -f .build/*manna-harbour_miryoku*.hex ] && cp .build/*manna-harbour_miryoku*.hex "$artifact_dir/"
+      for h in "$artifact_dir"/*manna-harbour_miryoku*.hex; do
+        [ -f "$h" ] || continue
+        u="${h%.hex}.uf2"
+        [ -f "$u" ] || python3 util/uf2conv.py -c -f RP2040 -o "$u" "$h"
+      done
 
       echo "Built artifact: $artifact_build_name"
   artifacts:
