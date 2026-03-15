@@ -1,0 +1,32 @@
+---
+description: Use project venv (.venv) for local QMK builds
+alwaysApply: true
+---
+
+# Local build: use venv
+
+For local QMK builds in this repo, use the project’s Python virtual environment at `.venv`. Do not assume or recommend a system-wide `qmk` install.
+
+## Running builds
+
+- **Preferred**: Activate the venv, then run `qmk` or `make`:
+  ```bash
+  source .venv/bin/activate
+  qmk compile -kb <keyboard> -km <keymap> [options]
+  ```
+- **Without activating**: Call the venv’s `qmk` explicitly (from repo root):
+  ```bash
+  .venv/bin/qmk compile -kb <keyboard> -km <keymap> [options]
+  ```
+- **With make** (e.g. `make git-submodule`): Either activate first, or set:
+  ```bash
+  make <target> QMK_BIN="$(pwd)/.venv/bin/qmk"
+  ```
+
+## One-time setup
+
+If `.venv` is missing or broken, see `docs/local_build_venv.md` for full setup (venv creation, `pip install -r requirements.txt`, `pip install qmk`, `qmk setup`, submodules).
+
+## When suggesting commands
+
+When suggesting compile, flash, or other QMK CLI commands in this project, use one of the patterns above so the venv is used.
