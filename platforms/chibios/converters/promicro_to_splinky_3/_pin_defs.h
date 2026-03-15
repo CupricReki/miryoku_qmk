@@ -13,7 +13,7 @@
 #define D4 4U
 #define C6 5U
 #define D7 6U
-#define E6 7U
+#define E6 8U  /* was 7U; use B4 (GPIO 8) if GPIO 7 is bad — short E6 pad to B4 pad on MCU */
 #define B4 8U
 #define B5 9U
 

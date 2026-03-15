@@ -75,12 +75,10 @@ stages:
         # affect the split make invocations. Use -build targets (no flash, output *_left.uf2 / *_right.uf2).
         make_convert_to=""
         [ -n "${SPLIT_CONVERT_TO:-}" ] && make_convert_to="CONVERT_TO=${SPLIT_CONVERT_TO}"
-        for hand in left right; do
-          make $make_convert_to "$KEYBOARD:manna-harbour_miryoku:uf2-split-${hand}-build"
-          for u in .build/*manna-harbour_miryoku*_${hand}.uf2; do
-            [ -f "$u" ] && cp "$u" "$artifact_dir/" && break
-          done
-        done
+        make $make_convert_to "$KEYBOARD:manna-harbour_miryoku:uf2-split-left-build"
+        for u in .build/*manna-harbour_miryoku*_left.uf2; do [ -f "$u" ] && cp "$u" "$artifact_dir/" && break; done
+        make $make_convert_to "$KEYBOARD:manna-harbour_miryoku:uf2-split-right-build"
+        for u in .build/*manna-harbour_miryoku*_right.uf2; do [ -f "$u" ] && cp "$u" "$artifact_dir/" && break; done
       fi
 
       echo "Built artifact: $artifact_build_name"
