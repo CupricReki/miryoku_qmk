@@ -25,11 +25,12 @@ source .venv/bin/activate
 qmk compile -kb crkbd/rev1 -km manna-harbour_miryoku -e CONVERT_TO=splinky_3
 ```
 
-For split + EE_HANDS, build left/right separately, then copy each `.uf2` to the matching half’s drive (RP2040 shows a drive when in bootloader mode; copy the file there, no flasher needed):
+For split + EE_HANDS, build left/right images, then copy each `.uf2` to the matching half’s drive (put half in bootloader mode first; copy the file to the drive that appears). Use the venv’s make (activate it first or set `QMK_BIN`). For crkbd + Splinky v3, export `CONVERT_TO` so the submake uses the converter. After each make, copy the `.uf2` from `.build/` to that half’s drive (same filename; the binary is left- or right-handed).
 
 ```bash
-qmk flash -kb crkbd/rev1 -km manna-harbour_miryoku -e CONVERT_TO=splinky_3 -bl uf2-split-left   # build left, then copy to left half
-qmk flash -kb crkbd/rev1 -km manna-harbour_miryoku -e CONVERT_TO=splinky_3 -bl uf2-split-right  # build right, then copy to right half
+export CONVERT_TO=splinky_3
+make crkbd/rev1:manna-harbour_miryoku:uf2-split-left
+make crkbd/rev1:manna-harbour_miryoku:uf2-split-right
 ```
 
 ## crkbd + Splinky v3
