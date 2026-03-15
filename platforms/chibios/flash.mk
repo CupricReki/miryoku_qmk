@@ -55,11 +55,11 @@ endef
 
 # TODO: Remove once ARM has a way to configure EECONFIG_HANDEDNESS
 #       within the emulated eeprom via dfu-util or another tool
-ifneq (,$(filter $(MAKECMDGOALS), dfu-util-split-left uf2-split-left))
+ifneq (,$(filter $(MAKECMDGOALS), dfu-util-split-left uf2-split-left uf2-split-left-build))
     OPT_DEFS += -DINIT_EE_HANDS_LEFT
 endif
 
-ifneq (,$(filter $(MAKECMDGOALS), dfu-util-split-right uf2-split-right))
+ifneq (,$(filter $(MAKECMDGOALS), dfu-util-split-right uf2-split-right uf2-split-right-build))
     OPT_DEFS += -DINIT_EE_HANDS_RIGHT
 endif
 
@@ -70,6 +70,15 @@ dfu-util-split-right: dfu-util
 uf2-split-left: flash
 
 uf2-split-right: flash
+
+# Build-only split targets: produce _left.uf2 / _right.uf2 without attempting flash
+uf2-split-left-build: $(BUILD_DIR)/$(TARGET).bin cpfirmware sizeafter
+	$(COPY) $(BUILD_DIR)/$(TARGET).uf2 $(BUILD_DIR)/$(TARGET)_left.uf2
+	$(SILENT) || printf "Built $(BUILD_DIR)/$(TARGET)_left.uf2 - copy to left half\n"
+
+uf2-split-right-build: $(BUILD_DIR)/$(TARGET).bin cpfirmware sizeafter
+	$(COPY) $(BUILD_DIR)/$(TARGET).uf2 $(BUILD_DIR)/$(TARGET)_right.uf2
+	$(SILENT) || printf "Built $(BUILD_DIR)/$(TARGET)_right.uf2 - copy to right half\n"
 
 ST_LINK_CLI ?= st-link_cli
 ST_LINK_ARGS ?=

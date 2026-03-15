@@ -25,13 +25,14 @@ source .venv/bin/activate
 qmk compile -kb crkbd/rev1 -km manna-harbour_miryoku -e CONVERT_TO=splinky_3
 ```
 
-For split + EE_HANDS, build left/right images, then copy each `.uf2` to the matching half’s drive (put half in bootloader mode first; copy the file to the drive that appears). Use the venv’s make (activate it first or set `QMK_BIN`). For crkbd + Splinky v3, export `CONVERT_TO` so the submake uses the converter. After each make, copy the `.uf2` from `.build/` to that half’s drive (same filename; the binary is left- or right-handed).
+For split + EE_HANDS, use the **build-only** targets so the firmware is built without attempting to flash. Outputs are named `*_left.uf2` and `*_right.uf2` in `.build/`. Put each half in bootloader mode, then copy the matching file to that half’s drive. Use the venv’s make (activate it first or set `QMK_BIN`). For crkbd + Splinky v3, pass `CONVERT_TO` to make:
 
 ```bash
-export CONVERT_TO=splinky_3
-make crkbd/rev1:manna-harbour_miryoku:uf2-split-left
-make crkbd/rev1:manna-harbour_miryoku:uf2-split-right
+make CONVERT_TO=splinky_3 crkbd/rev1:manna-harbour_miryoku:uf2-split-left-build
+make CONVERT_TO=splinky_3 crkbd/rev1:manna-harbour_miryoku:uf2-split-right-build
 ```
+
+Then copy `.build/*_left.uf2` to the left half’s drive and `.build/*_right.uf2` to the right half’s drive.
 
 ## crkbd + Splinky v3
 
