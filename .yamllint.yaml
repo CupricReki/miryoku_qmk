@@ -1,0 +1,10 @@
+# yamllint config for QMK repo (CI/workflows)
+extends: default
+rules:
+  line-length:
+    max: 200
+    allow-non-breakable-words: true
+  document-start: disable
+  comments: disable
+  truthy: disable  # GitHub Actions often use on/off
+  indentation: disable  # mixed styles in upstream workflows

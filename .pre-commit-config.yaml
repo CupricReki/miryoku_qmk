@@ -1,0 +1,56 @@
+# Pre-commit hooks for QMK firmware repo
+#
+# Install (after pip install pre-commit or pipx install pre-commit):
+#   pre-commit install
+#
+# Run on staged files: automatic on git commit
+# Run on all files:    pre-commit run --all-files
+# Skip hooks once:     git commit --no-verify
+#
+# Requires: pre-commit (pip or pipx), yamllint, shellcheck, flake8
+
+default_language_version:
+  python: python3
+
+repos:
+  # General file and commit checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^lib/
+      - id: end-of-file-fixer
+        exclude: ^lib/
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=500]
+      - id: detect-private-key
+      - id: check-case-conflict
+      - id: debug-statements
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  # YAML linting (CI, workflows, config)
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: [-c, .yamllint.yaml]
+        types: [yaml]
+
+  # Shell script linting (exclude util/, keyboards/, users/ - upstream/community scripts)
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.9.0.6
+    hooks:
+      - id: shellcheck
+        args: [-S, warning]
+        exclude: ^(util|keyboards|users|docs)/
+
+  # Python: style and lint (uses setup.cfg). Only check lib/python/ (QMK CLI); util/ and users/ have existing violations.
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        args: [--config=setup.cfg]
+        files: ^lib/python/
