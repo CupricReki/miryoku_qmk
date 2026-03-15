@@ -21,6 +21,7 @@ Currently the following converters are available:
 | `promicro` | `elite_pi`        |
 | `promicro` | `helios`          |
 | `promicro` | `michi`           |
+| `promicro` | `splinky_3`       |
 | `elite_c`  | `stemcell`        |
 | `elite_c`  | `rp2040_ce`       |
 | `elite_c`  | `elite_pi`        |
@@ -88,6 +89,7 @@ If a board currently supported in QMK uses a [Pro Micro](https://www.sparkfun.co
 | [Elite-Pi](https://keeb.io/products/elite-pi-usb-c-pro-micro-replacement-rp2040)         | `elite_pi`        |
 | [0xCB Helios](https://keeb.supply/products/0xcb-helios)                                  | `helios`          |
 | [Michi](https://github.com/ci-bus/michi-promicro-rp2040)                                 | `michi`           |
+| [BastardKB Splinky v3](https://docs.bastardkb.com/hardware/splinky/3/)                   | `splinky_3`       |
 
 Converter summary:
 
@@ -104,6 +106,7 @@ Converter summary:
 | `elite_pi`        | `-e CONVERT_TO=elite_pi`        | `CONVERT_TO=elite_pi`        | `#ifdef CONVERT_TO_ELITE_PI`        |
 | `helios`          | `-e CONVERT_TO=helios`          | `CONVERT_TO=helios`          | `#ifdef CONVERT_TO_HELIOS`          |
 | `michi`           | `-e CONVERT_TO=michi`           | `CONVERT_TO=michi`           | `#ifdef CONVERT_TO_MICHI`           |
+| `splinky_3`       | `-e CONVERT_TO=splinky_3`       | `CONVERT_TO=splinky_3`       | `#ifdef CONVERT_TO_SPLINKY_3`       |
 
 ### Proton C :id=proton_c
 
@@ -134,7 +137,7 @@ The following defaults are based on what has been implemented for [RP2040](platf
 | USB Host (e.g. USB-USB converter)            | Not supported (USB host code is AVR specific and is not currently supported on ARM)                              |
 | [Split keyboards](feature_split_keyboard.md) | Partial via `PIO` vendor driver - heavily dependent on enabled features                                          |
 
-### SparkFun Pro Micro - RP2040, Blok, Bit-C PRO and Michi :id=promicro_rp2040 
+### SparkFun Pro Micro - RP2040, Blok, Bit-C PRO and Michi :id=promicro_rp2040
 
 Currently identical to [Adafruit KB2040](#kb2040).
 
