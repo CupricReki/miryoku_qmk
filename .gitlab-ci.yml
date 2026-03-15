@@ -69,6 +69,15 @@ stages:
         [ -f "$u" ] || python3 util/uf2conv.py -c -f RP2040 -o "$u" "$h"
       done
 
+      if [ -n "${SPLIT_EE_HANDS:-}" ]; then
+        for hand in left right; do
+          make "$KEYBOARD:manna-harbour_miryoku:uf2-split-$hand"
+          for u in .build/*manna-harbour_miryoku*.uf2; do
+            [ -f "$u" ] && cp "$u" "$artifact_dir/$(basename "$u" .uf2)_${hand}.uf2" && break
+          done
+        done
+      fi
+
       echo "Built artifact: $artifact_build_name"
   artifacts:
     name: "$CI_JOB_NAME-$CI_COMMIT_SHORT_SHA"
@@ -81,6 +90,7 @@ build-skeletyl-splinky_v2:
   <<: *build_template
   variables:
     KEYBOARD: "bastardkb/skeletyl/v2/splinky_2"
+    SPLIT_EE_HANDS: "true"
 
 build-skeletyl-elitec:
   <<: *build_template
@@ -92,3 +102,4 @@ build-crkbd-splinky_v3:
   variables:
     KEYBOARD: "crkbd/rev1"
     RULES: "CONVERT_TO = splinky_3"
+    SPLIT_EE_HANDS: "true"
