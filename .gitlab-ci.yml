@@ -57,6 +57,8 @@ stages:
 
       qmk compile -kb "$KEYBOARD" -km manna-harbour_miryoku
       cp *manna-harbour_miryoku* "$artifact_dir/"
+      [ -f .build/*manna-harbour_miryoku*.uf2 ] && cp .build/*manna-harbour_miryoku*.uf2 "$artifact_dir/"
+      [ -f .build/*manna-harbour_miryoku*.hex ] && cp .build/*manna-harbour_miryoku*.hex "$artifact_dir/"
 
       echo "Built artifact: $artifact_build_name"
   artifacts:
